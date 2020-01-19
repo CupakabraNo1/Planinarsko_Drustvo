@@ -25,14 +25,14 @@ public class Termin_znamenitost implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date pocetak;
 
+	//bi-directional many-to-one association to Poseta
+	@OneToMany(mappedBy="terminZnamenitost")
+	private List<Poseta> posetas;
+
 	//bi-directional many-to-one association to Znamenitost
 	@ManyToOne
 	@JoinColumn(name="Znamenitost_idZnamenitost")
 	private Znamenitost znamenitost;
-
-	//bi-directional many-to-many association to Rezervacija
-	@ManyToMany(mappedBy="terminZnamenitosts")
-	private List<Rezervacija> rezervacijas;
 
 	public Termin_znamenitost() {
 	}
@@ -61,20 +61,34 @@ public class Termin_znamenitost implements Serializable {
 		this.pocetak = pocetak;
 	}
 
+	public List<Poseta> getPosetas() {
+		return this.posetas;
+	}
+
+	public void setPosetas(List<Poseta> posetas) {
+		this.posetas = posetas;
+	}
+
+	public Poseta addPoseta(Poseta poseta) {
+		getPosetas().add(poseta);
+		poseta.setTerminZnamenitost(this);
+
+		return poseta;
+	}
+
+	public Poseta removePoseta(Poseta poseta) {
+		getPosetas().remove(poseta);
+		poseta.setTerminZnamenitost(null);
+
+		return poseta;
+	}
+
 	public Znamenitost getZnamenitost() {
 		return this.znamenitost;
 	}
 
 	public void setZnamenitost(Znamenitost znamenitost) {
 		this.znamenitost = znamenitost;
-	}
-
-	public List<Rezervacija> getRezervacijas() {
-		return this.rezervacijas;
-	}
-
-	public void setRezervacijas(List<Rezervacija> rezervacijas) {
-		this.rezervacijas = rezervacijas;
 	}
 
 }

@@ -18,7 +18,8 @@ public class Planinarska_staza implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idStaza;
 
-	private Object mapa;
+	@Lob
+	private byte[] mapa;
 
 	private String naziv;
 
@@ -46,11 +47,11 @@ public class Planinarska_staza implements Serializable {
 		this.idStaza = idStaza;
 	}
 
-	public Object getMapa() {
+	public byte[] getMapa() {
 		return this.mapa;
 	}
 
-	public void setMapa(Object mapa) {
+	public void setMapa(byte[] mapa) {
 		this.mapa = mapa;
 	}
 

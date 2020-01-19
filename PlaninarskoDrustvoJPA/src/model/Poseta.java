@@ -18,15 +18,19 @@ public class Poseta implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idPoseta;
 
-	@Column(name="Rezervacija_idRezervacija")
-	private int rezervacija_idRezervacija;
-
-	@Column(name="Termin_idTermin")
-	private int termin_idTermin;
-
 	//bi-directional many-to-one association to Komentar
 	@OneToMany(mappedBy="poseta")
 	private List<Komentar> komentars;
+
+	//bi-directional many-to-one association to Rezervacija
+	@ManyToOne
+	@JoinColumn(name="Rezervacija_idRezervacija")
+	private Rezervacija rezervacija;
+
+	//bi-directional many-to-one association to Termin_znamenitost
+	@ManyToOne
+	@JoinColumn(name="Termin_idTermin")
+	private Termin_znamenitost terminZnamenitost;
 
 	public Poseta() {
 	}
@@ -37,22 +41,6 @@ public class Poseta implements Serializable {
 
 	public void setIdPoseta(int idPoseta) {
 		this.idPoseta = idPoseta;
-	}
-
-	public int getRezervacija_idRezervacija() {
-		return this.rezervacija_idRezervacija;
-	}
-
-	public void setRezervacija_idRezervacija(int rezervacija_idRezervacija) {
-		this.rezervacija_idRezervacija = rezervacija_idRezervacija;
-	}
-
-	public int getTermin_idTermin() {
-		return this.termin_idTermin;
-	}
-
-	public void setTermin_idTermin(int termin_idTermin) {
-		this.termin_idTermin = termin_idTermin;
 	}
 
 	public List<Komentar> getKomentars() {
@@ -75,6 +63,22 @@ public class Poseta implements Serializable {
 		komentar.setPoseta(null);
 
 		return komentar;
+	}
+
+	public Rezervacija getRezervacija() {
+		return this.rezervacija;
+	}
+
+	public void setRezervacija(Rezervacija rezervacija) {
+		this.rezervacija = rezervacija;
+	}
+
+	public Termin_znamenitost getTerminZnamenitost() {
+		return this.terminZnamenitost;
+	}
+
+	public void setTerminZnamenitost(Termin_znamenitost terminZnamenitost) {
+		this.terminZnamenitost = terminZnamenitost;
 	}
 
 }

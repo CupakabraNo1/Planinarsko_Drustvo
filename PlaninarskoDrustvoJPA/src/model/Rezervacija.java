@@ -30,6 +30,10 @@ public class Rezervacija implements Serializable {
 	@OneToMany(mappedBy="rezervacija")
 	private List<Izvestaj> izvestajs;
 
+	//bi-directional many-to-one association to Poseta
+	@OneToMany(mappedBy="rezervacija")
+	private List<Poseta> posetas;
+
 	//bi-directional many-to-one association to Dom
 	@ManyToOne
 	@JoinColumn(name="Dom_idDom")
@@ -39,19 +43,6 @@ public class Rezervacija implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="Korisnik_idKorisnik")
 	private Korisnik korisnik;
-
-	//bi-directional many-to-many association to Termin_znamenitost
-	@ManyToMany
-	@JoinTable(
-		name="Poseta"
-		, joinColumns={
-			@JoinColumn(name="Rezervacija_idRezervacija")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="Termin_idTermin")
-			}
-		)
-	private List<Termin_znamenitost> terminZnamenitosts;
 
 	public Rezervacija() {
 	}
@@ -102,6 +93,28 @@ public class Rezervacija implements Serializable {
 		return izvestaj;
 	}
 
+	public List<Poseta> getPosetas() {
+		return this.posetas;
+	}
+
+	public void setPosetas(List<Poseta> posetas) {
+		this.posetas = posetas;
+	}
+
+	public Poseta addPoseta(Poseta poseta) {
+		getPosetas().add(poseta);
+		poseta.setRezervacija(this);
+
+		return poseta;
+	}
+
+	public Poseta removePoseta(Poseta poseta) {
+		getPosetas().remove(poseta);
+		poseta.setRezervacija(null);
+
+		return poseta;
+	}
+
 	public Dom getDom() {
 		return this.dom;
 	}
@@ -116,14 +129,6 @@ public class Rezervacija implements Serializable {
 
 	public void setKorisnik(Korisnik korisnik) {
 		this.korisnik = korisnik;
-	}
-
-	public List<Termin_znamenitost> getTerminZnamenitosts() {
-		return this.terminZnamenitosts;
-	}
-
-	public void setTerminZnamenitosts(List<Termin_znamenitost> terminZnamenitosts) {
-		this.terminZnamenitosts = terminZnamenitosts;
 	}
 
 }

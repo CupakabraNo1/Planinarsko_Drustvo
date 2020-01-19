@@ -3,7 +3,6 @@ package model;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -26,9 +25,9 @@ public class Clanarina implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date od;
 
-	//bi-directional many-to-one association to Korisnik
-	@OneToMany(mappedBy="clanarina")
-	private List<Korisnik> korisniks;
+	//bi-directional one-to-one association to Korisnik
+	@OneToOne(mappedBy="clanarina")
+	private Korisnik korisnik;
 
 	public Clanarina() {
 	}
@@ -57,26 +56,12 @@ public class Clanarina implements Serializable {
 		this.od = od;
 	}
 
-	public List<Korisnik> getKorisniks() {
-		return this.korisniks;
+	public Korisnik getKorisnik() {
+		return this.korisnik;
 	}
 
-	public void setKorisniks(List<Korisnik> korisniks) {
-		this.korisniks = korisniks;
-	}
-
-	public Korisnik addKorisnik(Korisnik korisnik) {
-		getKorisniks().add(korisnik);
-		korisnik.setClanarina(this);
-
-		return korisnik;
-	}
-
-	public Korisnik removeKorisnik(Korisnik korisnik) {
-		getKorisniks().remove(korisnik);
-		korisnik.setClanarina(null);
-
-		return korisnik;
+	public void setKorisnik(Korisnik korisnik) {
+		this.korisnik = korisnik;
 	}
 
 }

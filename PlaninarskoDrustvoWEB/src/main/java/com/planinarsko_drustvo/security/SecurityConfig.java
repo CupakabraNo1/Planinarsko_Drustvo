@@ -1,7 +1,6 @@
 package com.planinarsko_drustvo.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,47 +14,54 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	
+
 	@Autowired
-	@Qualifier("customUserDetail")
- 	UserDetailsService uds;
-	
+	UserDetailsService uds;
+
 	@Bean
 	public PasswordEncoder getPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-	   auth.userDetailsService(uds);
+		auth.userDetailsService(uds);
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-	   http.authorizeRequests().
-	   antMatchers("/","/loginPage").permitAll().
-	   antMatchers("/admin/**").hasRole("MANAGER").
-	   antMatchers("/users/**").hasAnyRole("EMPLOYEE","MANAGER").
-	   and().formLogin().
-	   loginPage("/pages/login.jsp?loged=false").
-	   loginProcessingUrl("/login").
-	   defaultSuccessUrl("/pages/home.jsp")
-	   .failureForwardUrl("/pages/login?loged=true").and().
-	   logout().invalidateHttpSession(true)
-	   .logoutSuccessUrl("/pages/login.jsp?loged=false")
-	   .and()
-	   .exceptionHandling()
-	   .accessDeniedPage("/pages/403.jsp")
-	   .accessDeniedPage("/pages/access_denied.jsp").and().csrf().
-	   and().rememberMe();
-//	   and().csrf().disable();
+		
+		//autorizacija korisnika na osnovu njihove uloge u bazi
+		http.authorizeRequests(authorise -> {
+			authorise.antMatchers("/", "/logovanje").permitAll();
+			authorise.antMatchers("/administrator/**").hasRole("administrator");
+			authorise.antMatchers("/korisnik/**").hasAnyRole("korisnik", "administrator");
+		});
+		
+		//logovanje na odgovarajucu stranicu
+		http.formLogin(login -> {
+			login.loginPage("/pages/logovanje.jsp");
+			login.loginProcessingUrl("/login");
+			login.defaultSuccessUrl("/ulogovan");
+			login.failureForwardUrl("/pages/neuspesno_logovanje.jsp");
+		});
+		
+		//brisanje podataka iz sesije prilikom odjavljivanja
+		http.logout(logout -> {
+			logout.invalidateHttpSession(true);
+			logout.logoutSuccessUrl("/pages/login");
+		});
+		
+		//greske koje se javljaju
+		http.exceptionHandling(exception -> {
+			exception.accessDeniedPage("/pages/neautorizovan_pristup.jsp");
+		});
+		
+		//pamti podatke u kuki
+//		http.rememberMe();
+		
+		//csrf token za forme
+		http.csrf().disable();
 	}
-
-
-
-	
-
-	
-	
 
 }

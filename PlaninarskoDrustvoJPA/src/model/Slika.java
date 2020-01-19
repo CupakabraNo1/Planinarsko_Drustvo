@@ -17,7 +17,8 @@ public class Slika implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idSlika;
 
-	private Object slika;
+	@Lob
+	private byte[] slika;
 
 	//bi-directional many-to-one association to Izvestaj
 	@ManyToOne
@@ -40,11 +41,11 @@ public class Slika implements Serializable {
 		this.idSlika = idSlika;
 	}
 
-	public Object getSlika() {
+	public byte[] getSlika() {
 		return this.slika;
 	}
 
-	public void setSlika(Object slika) {
+	public void setSlika(byte[] slika) {
 		this.slika = slika;
 	}
 
