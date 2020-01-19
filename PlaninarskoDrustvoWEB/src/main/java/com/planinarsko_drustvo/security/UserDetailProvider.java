@@ -28,7 +28,7 @@ public class UserDetailProvider implements UserDetailsService {
 		UserDetails ud = null;
 		if(k!=null)
 			ud = new CustomUserDetail(k);
-			request.setAttribute("korisnik", k);
+			request.getSession().setAttribute("korisnik", k);
 		return ud;
 	}
 }
