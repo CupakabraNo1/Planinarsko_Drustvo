@@ -40,39 +40,33 @@ public class CustomUserDetail implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
-		authorities.add(new SimpleGrantedAuthority(k.getUloga().getNaziv()));
+		authorities.add(new SimpleGrantedAuthority("ROLE_"+k.getUloga().getNaziv()));
 		return authorities;
 	}
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
 		return k.getLozinka();
 	}
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
 		return k.getKorisnickoIme();
 	}
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 	@Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 

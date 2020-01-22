@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -42,5 +43,13 @@ public class PrijavaController {
 		request.getSession().removeAttribute("loguj");
 		request.getSession().setAttribute("reg", 1);
 		return "logovanje";
+	}
+	
+	/*registrovanje novog korisika na sistem*/
+	@PostMapping("/registracija")
+	public String registrujSe(String ime, String prezime, String korisnicko_ime, String lozinka) {
+		
+		
+		return "index";
 	}
 }

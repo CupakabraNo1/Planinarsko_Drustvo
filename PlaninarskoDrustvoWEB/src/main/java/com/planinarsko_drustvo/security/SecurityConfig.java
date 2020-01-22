@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		//brisanje podataka iz sesije prilikom odjavljivanja
 		http.logout(logout -> {
 			logout.invalidateHttpSession(true);
-			logout.logoutSuccessUrl("/pages/login");
+			logout.logoutSuccessUrl("/");
 		});
 		
 		//greske koje se javljaju
