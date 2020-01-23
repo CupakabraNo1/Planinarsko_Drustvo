@@ -16,8 +16,13 @@
 
 
 	<!-- Korisnicki deo -->
+	
+	<a href="${pageContext.request.contextPath}/korisnik/komentari"><button>Komentari</button></a>
 	<a href="${pageContext.request.contextPath}/korisnik/rezervisi"><button>Rezervacija</button></a>
+	<a href="${pageContext.request.contextPath}/pocetna"><button>Pocetna</button></a>
+	<a href="${pageContext.request.contextPath}/korisnik/staze"><button>Staze</button></a>
 	<a href="${pageContext.request.contextPath}/korisnik/znamenitosti"><button>Znamentitosti</button></a>
+	
 	<!-- Administratorski deo -->
 
 

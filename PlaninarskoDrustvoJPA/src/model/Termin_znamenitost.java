@@ -24,11 +24,13 @@ public class Termin_znamenitost implements Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date pocetak;
-
+	
+	private boolean neophodan;
+	
 	//bi-directional many-to-one association to Poseta
 	@OneToMany(mappedBy="terminZnamenitost")
 	private List<Poseta> posetas;
-
+	
 	//bi-directional many-to-one association to Znamenitost
 	@ManyToOne
 	@JoinColumn(name="Znamenitost_idZnamenitost")
@@ -59,6 +61,15 @@ public class Termin_znamenitost implements Serializable {
 
 	public void setPocetak(Date pocetak) {
 		this.pocetak = pocetak;
+	}
+
+	
+	public boolean isNeophodan() {
+		return neophodan;
+	}
+
+	public void setNeophodan(boolean neophodan) {
+		this.neophodan = neophodan;
 	}
 
 	public List<Poseta> getPosetas() {

@@ -69,7 +69,10 @@ public class KorisnikController {
 
 	@GetMapping("/rezervisi")
 	public String otvoriRezervacije() {
-		List<Planina> planine = pr.findAll();
+		@SuppressWarnings("unchecked")
+		List<Planina> planine = (List<Planina>)request.getSession().getAttribute("planine");
+		if(planine == null)
+			planine = pr.findAll();
 		request.getSession().setAttribute("planine", planine);
 		return "rezervacija";
 	}
@@ -106,11 +109,21 @@ public class KorisnikController {
 		request.getSession().setAttribute("rezervacija", rezervacija);
 		return "rezervacija";
 	}
-
+	
+	@GetMapping("/staze")
+	public String staze() {
+		@SuppressWarnings("unchecked")
+		List<Planina> planine = (List<Planina>)request.getSession().getAttribute("planine");
+		if(planine == null)
+			planine = pr.findAll();
+		request.getSession().setAttribute("planine", planine);
+		return "staze";
+	}
+	
 	@GetMapping("/pregledStaza")
-	public String pregledStaza() {
-		Planina planina = (Planina) request.getSession().getAttribute("planina");
-		List<Planinarska_staza> staze = sr.findByPlanina(planina);
+	public String pregledStaza(String planina) {
+		Planina p = pr.findById(Integer.parseInt(planina)).get();
+		List<Planinarska_staza> staze = sr.findByPlanina(p);
 		List<String> bs64 = new ArrayList<String>();
 		for (Planinarska_staza ps : staze) {
 			bs64.add(Base64.getEncoder().encodeToString(ps.getMapa()));
@@ -120,17 +133,16 @@ public class KorisnikController {
 		request.getSession().setAttribute("staze", staze);
 		return "staze";
 	}
-
-//	@GetMapping("/slikeZaZnamenitost")
-//	public String slikeZaZnamenitost(String znamenitost) {
-//		Znamenitost z = zr.findById(Integer.parseInt(znamenitost)).get();
-//		List<Slika> slike = slr.findByZnamenitost(z);
-//		request.getSession().setAttribute(""+znamenitost, slike);
-//		return "staze";
-//	}
-
+	
 	@GetMapping("/znamenitosti")
 	public String otvoriZnamenitosti(String staza) {
+		List<Planinarska_staza> staze = sr.findAll();
+		request.getSession().setAttribute("staze", staze);
+		return "znamenitosti";
+	}
+	
+	@GetMapping("/pregledZnamenitosti")
+	public String pregledZnamenitosti(String staza) {
 		Planinarska_staza pStaza = sr.findById(Integer.parseInt(staza)).get();
 		Korisnik k = (Korisnik) request.getSession().getAttribute("korisnik");
 		List<Znamenitost> znamenitosti = zr.findByPlaninarskaStaza(pStaza);
@@ -161,7 +173,16 @@ public class KorisnikController {
 	public String poseti(String z) {
 		Znamenitost znamenitost = zr.findById(Integer.parseInt(z)).get();
 		List<Termin_znamenitost> termini = trzr.findByZnamenitost(znamenitost);
+		for(Termin_znamenitost t:termini) {
+			if(!t.isNeophodan()) {
+				termini.remove(t);
+			}
+		}
 		request.getSession().setAttribute("termini", termini);
+		if(termini.size() == 0) {
+			request.getSession().setAttribute("termini", null);
+		}
+		
 		return "poseta";
 	}
 
@@ -180,7 +201,7 @@ public class KorisnikController {
 			List<Rezervacija> rezervacije = rr.nadjiRezervacijuZaKorisnika(k.getIdKorisnik(), d.getIdDom());
 			if (rezervacije != null) {
 				for (Rezervacija rez : rezervacije) {
-					if (rez.getOd().before(poc)) {
+					if (rez.getOd().before(poc) && rez.getOd().before(kr)) {
 						r = rez;
 						break;
 					}
@@ -199,5 +220,14 @@ public class KorisnikController {
 		}
 		return "poseta";
 	}
-
+	
+	@GetMapping
+	public String komentari() {
+		@SuppressWarnings("unchecked")
+		List<Znamenitost> znamenitosti = (List<Znamenitost>)request.getSession().getAttribute("znamenitosti");
+		if(znamenitosti == null)
+			znamenitosti = zr.findAll();
+		request.getSession().setAttribute("znamenitosti", znamenitosti);
+		return "komentari";
+	}
 }

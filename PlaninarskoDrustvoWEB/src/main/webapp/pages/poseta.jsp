@@ -19,7 +19,7 @@
 					<c:forEach var="t" items="${termini}">
 						<option value = "${t.idTermin}">pocetak: ${t.pocetak}	kraj:${t.kraj}</option>
 					</c:forEach>
-				</select>
+				</select><br>
 				<input type="submit" value="Zakazi posetu">
 			</fieldset>
 		</form>
@@ -33,7 +33,18 @@
 	</c:if>
 
 	<c:if test="${empty termini}">
-
+		<form action="${pageContext.request.contextPath}/korisnik/posetaVanTermina" method="post">
+			<fieldset>
+				<legend>Za ovu znamenitost nije potreban izbor termina</legend>
+				<select name="termin">
+					<c:forEach var="t" items="${termini}">
+						<option value = "${t.idTermin}">pocetak: ${t.pocetak}	kraj:${t.kraj}</option>
+					</c:forEach>
+				</select><br>
+				
+				<input type="submit" value="Zakazi posetu">
+			</fieldset>
+		</form>
 	</c:if>
 
 </body>

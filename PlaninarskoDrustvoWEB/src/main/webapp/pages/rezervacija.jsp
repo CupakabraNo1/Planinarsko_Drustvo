@@ -10,10 +10,6 @@
 <title>Rezervacije</title>
 </head>
 <body>
-	<c:if test="${empty planine}">
-		<h1>Nema nijedne planine</h1>
-	</c:if>
-
 	<c:if test="${!empty planine}">
 		<form action="${pageContext.request.contextPath}/korisnik/domovi">
 			<label for="planina">Planina</label> <select name="planina">
@@ -24,20 +20,19 @@
 			<input type="submit" value="Pretrazi">
 		</form>
 	</c:if>
+	
 	<hr>
-    <c:if test="${!empty domovi}">
-    	<a href="${pageContext.request.contextPath}/korisnik/pregledStaza"><button>Pregled staza</button></a>
-    </c:if>
+    
 	<c:if test="${!empty domovi }">
 		<form action="${pageContext.request.contextPath}/korisnik/napraviRezervaciju" method="post">
 			<label for="dom">Dom</label> <select name="dom">
 				<c:forEach var="d" items="${domovi}">
 					<option value="${d.idDom }">${d.naziv}</option>
 				</c:forEach>
-			</select> 
-			<label for="datumPocetka">Datum pocetka</label> <input type="date" name="datumPocetka">
-			<label for="datumZavrsetka">Datum zavrsetka</label> <input type="date" name="datumZavrsetka">
-			<input type="submit" value="Rezervisi">
+			</select> <br>
+			<label for="datumPocetka">Datum pocetka</label> <input type="date" name="datumPocetka"><br>
+			<label for="datumZavrsetka">Datum zavrsetka</label> <input type="date" name="datumZavrsetka"><br>
+			<input type="submit" value="Rezervisi"><br>
 		</form>
 	</c:if>
 
@@ -48,6 +43,10 @@
 	<c:if test="${!empty rezervacija}">
 		<h1>Napravili ste rezervaciju id joj je ${rezervacija.idRezervacija}</h1>
 	</c:if>
+	
+	<c:if test="${!empty domovi}">
+    	<a href="${pageContext.request.contextPath}/korisnik/pregledStaza?planina=${planina.idPlanina}"><button>Pregled staza</button></a>
+    </c:if>
 
 
 
