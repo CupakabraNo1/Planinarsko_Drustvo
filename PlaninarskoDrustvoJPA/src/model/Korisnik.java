@@ -27,6 +27,11 @@ public class Korisnik implements Serializable {
 
 	private String prezime;
 
+	//bi-directional one-to-one association to Clanarina
+	@OneToOne
+	@JoinColumn(name="Clanarina_idClanarina")
+	private Clanarina clanarina;
+
 	//bi-directional many-to-one association to Uloga
 	@ManyToOne
 	@JoinColumn(name="Uloga_idUloga")
@@ -35,11 +40,6 @@ public class Korisnik implements Serializable {
 	//bi-directional many-to-one association to Rezervacija
 	@OneToMany(mappedBy="korisnik")
 	private List<Rezervacija> rezervacijas;
-
-	//bi-directional one-to-one association to Clanarina
-	@OneToOne
-	@JoinColumn(name="Clanarina_idClanarina")
-	private Clanarina clanarina;
 
 	public Korisnik() {
 	}
@@ -84,6 +84,14 @@ public class Korisnik implements Serializable {
 		this.prezime = prezime;
 	}
 
+	public Clanarina getClanarina() {
+		return this.clanarina;
+	}
+
+	public void setClanarina(Clanarina clanarina) {
+		this.clanarina = clanarina;
+	}
+
 	public Uloga getUloga() {
 		return this.uloga;
 	}
@@ -112,14 +120,6 @@ public class Korisnik implements Serializable {
 		rezervacija.setKorisnik(null);
 
 		return rezervacija;
-	}
-
-	public Clanarina getClanarina() {
-		return this.clanarina;
-	}
-
-	public void setClanarina(Clanarina clanarina) {
-		this.clanarina = clanarina;
 	}
 
 }

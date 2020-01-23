@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.planinarsko_drustvo.repository.DomRepo;
+import com.planinarsko_drustvo.repository.KomentarRepo;
 import com.planinarsko_drustvo.repository.PlaninaRepo;
 import com.planinarsko_drustvo.repository.PosetaRepo;
 import com.planinarsko_drustvo.repository.RezervacijaRepo;
@@ -27,6 +28,7 @@ import com.planinarsko_drustvo.repository.TerminRepo;
 import com.planinarsko_drustvo.repository.ZnamenitostRepo;
 
 import model.Dom;
+import model.Komentar;
 import model.Korisnik;
 import model.Planina;
 import model.Planinarska_staza;
@@ -39,7 +41,7 @@ import model.Znamenitost;
 @Controller
 @RequestMapping("/korisnik")
 public class KorisnikController {
-
+	
 	@Autowired
 	HttpServletRequest request;
 
@@ -66,7 +68,9 @@ public class KorisnikController {
 
 	@Autowired
 	TerminRepo trzr;
-
+	
+	@Autowired
+	KomentarRepo kr;
 	@GetMapping("/rezervisi")
 	public String otvoriRezervacije() {
 		@SuppressWarnings("unchecked")
@@ -174,7 +178,7 @@ public class KorisnikController {
 		Znamenitost znamenitost = zr.findById(Integer.parseInt(z)).get();
 		List<Termin_znamenitost> termini = trzr.findByZnamenitost(znamenitost);
 		for(Termin_znamenitost t:termini) {
-			if(!t.isNeophodan()) {
+			if(t.getNeophodan() == 0) {
 				termini.remove(t);
 			}
 		}
@@ -199,35 +203,75 @@ public class KorisnikController {
 		Date kr = tz.getKraj();
 		for (Dom d : domovi) {
 			List<Rezervacija> rezervacije = rr.nadjiRezervacijuZaKorisnika(k.getIdKorisnik(), d.getIdDom());
+			
 			if (rezervacije != null) {
 				for (Rezervacija rez : rezervacije) {
-					if (rez.getOd().before(poc) && rez.getOd().before(kr)) {
+					if (rez.getOd().before(poc)) {
 						r = rez;
 						break;
 					}
 				}
 			}
 		}
-
+		//TODO:ne pronalazi rezervaciju za tu planinu
+		System.out.println(tz.getIdTermin());
+		System.out.println(r.getIdRezervacija());
 		if (tz != null && r != null) {
 			Poseta poseta = new Poseta();
 			poseta.setRezervacija(r);
 			poseta.setTerminZnamenitost(tz);
 			poseta = posr.save(poseta);
 			request.getSession().setAttribute("pos", poseta);
+			request.getSession().removeAttribute("poseta");
 		}else {
 			request.getSession().setAttribute("poseta", 1);
+			request.getSession().removeAttribute("pos");
 		}
 		return "poseta";
 	}
 	
-	@GetMapping
+	@GetMapping("/komentari")
 	public String komentari() {
-		@SuppressWarnings("unchecked")
-		List<Znamenitost> znamenitosti = (List<Znamenitost>)request.getSession().getAttribute("znamenitosti");
-		if(znamenitosti == null)
-			znamenitosti = zr.findAll();
+		List<Znamenitost> znamenitosti = zr.findAll();
 		request.getSession().setAttribute("znamenitosti", znamenitosti);
+		return "komentari";
+	}
+	
+	@GetMapping("/komentariZnamenitosti")
+	public String komentariZnamenitosti(String znamenitost) {
+		Znamenitost z = zr.findById(Integer.parseInt(znamenitost)).get();
+		List<Komentar> komentariZaZ = kr.nadjiKomentareZaZnamenitost(z.getIdZnamenitost());
+		Korisnik k = (Korisnik)request.getSession().getAttribute("korisnik");
+		
+		List<Poseta> posete = posr.nadjiPoKorisnikuIZnamenitosti(k.getIdKorisnik(), z.getIdZnamenitost());
+		Poseta poseta = null;
+		if(posete != null && posete.size() > 0)
+			poseta = posete.get(0);
+		
+		request.getSession().setAttribute("poseta", poseta);
+		request.getSession().setAttribute("znamenitost", z);
+		request.getSession().setAttribute("komentari", komentariZaZ);
+		return "komentari";
+	}
+
+	@PostMapping("/komentarisi")
+	public String komentarisi(String tekst) {
+		
+		Znamenitost z = (Znamenitost) request.getSession().getAttribute("znamenitost");
+		Poseta poseta = (Poseta) request.getSession().getAttribute("poseta");
+		
+		
+		Komentar kom = new Komentar();
+		kom.setPoseta(poseta);
+		kom.setTekst(tekst);
+		
+		kom = kr.save(kom);
+		
+		
+		@SuppressWarnings("unchecked")
+		List<Komentar> komentari = (List<Komentar>)request.getSession().getAttribute("komentari");
+		komentari.add(kom);
+		request.getSession().setAttribute("komentari", komentari);
 		return "komentari";
 	}
 }
