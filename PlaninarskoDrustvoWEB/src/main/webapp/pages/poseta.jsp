@@ -21,6 +21,7 @@
 					</c:forEach>
 				</select><br>
 				<input type="submit" value="Zakazi posetu">
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			</fieldset>
 		</form>
 		
@@ -43,6 +44,7 @@
 				</select><br>
 				
 				<input type="submit" value="Zakazi posetu">
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			</fieldset>
 		</form>
 	</c:if>

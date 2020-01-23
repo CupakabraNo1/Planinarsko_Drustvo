@@ -58,10 +58,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		});
 		
 		//pamti podatke u kuki
-//		http.rememberMe();
+		http.rememberMe();
 		
 		//csrf token za forme
-		http.csrf().disable();
+		http.csrf();
 	}
 
 }

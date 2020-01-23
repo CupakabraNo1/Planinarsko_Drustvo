@@ -19,6 +19,7 @@
 					<option value="${z.idZnamenitost}">${z.opis}</option>
 				</c:forEach>
 			</select> <input type="submit" value="Pretrazi">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		</form>
 	</c:if>
 	<hr>
@@ -45,8 +46,9 @@
 	<c:if test="${!empty poseta}">
 		<form action="${pageContext.request.contextPath}/korisnik/komentarisi"
 			method="post">
-			<input type="text" style="height: 50px; width: 50px" name="tekst"><br>
+			<input type="text" style="height: 50px; width: 100%" name="tekst"><br>
 			<input type="submit" value="Komentarisi">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		</form>
 	</c:if>
 	<c:if test="${empty poseta}">

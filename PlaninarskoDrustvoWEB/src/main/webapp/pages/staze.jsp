@@ -17,7 +17,9 @@
 				<c:forEach var="p" items="${planine}">
 					<option value="${p.idPlanina}">${p.naziv}</option>
 				</c:forEach>
-			</select> <input type="submit" value="Pretrazi">
+			</select><br>
+			<input type="submit" value="Pretrazi">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		</form>
 	</c:if>
 
@@ -25,8 +27,7 @@
 
 	<c:if test="${!empty staze}">
 		<c:forEach var="i" begin="0" end="${staze.size()-1}">
-			<form
-				action="${pageContext.request.contextPath}/korisnik/pregledZnamenitosti">
+			<form action="${pageContext.request.contextPath}/korisnik/pregledZnamenitosti">
 				<div style="border: 1px solid black; magine: 1%">
 
 					<h2>${staze.get(i).naziv}</h2>
@@ -36,7 +37,7 @@
 					<h6>${staze.get(i).tezina}</h6>
 					<input type="hidden" name="staza" value="${staze.get(i).idStaza}">
 					<input type="submit" value="Prikazi znamenitost">
-
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				</div>
 			</form>
 		</c:forEach>

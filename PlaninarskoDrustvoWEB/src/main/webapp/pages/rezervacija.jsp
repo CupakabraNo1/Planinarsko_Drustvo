@@ -18,6 +18,7 @@
 				</c:forEach>
 			</select>
 			<input type="submit" value="Pretrazi">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		</form>
 	</c:if>
 	
@@ -33,6 +34,7 @@
 			<label for="datumPocetka">Datum pocetka</label> <input type="date" name="datumPocetka"><br>
 			<label for="datumZavrsetka">Datum zavrsetka</label> <input type="date" name="datumZavrsetka"><br>
 			<input type="submit" value="Rezervisi"><br>
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		</form>
 	</c:if>
 

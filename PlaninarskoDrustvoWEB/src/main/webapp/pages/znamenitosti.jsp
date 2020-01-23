@@ -16,7 +16,9 @@
 				<c:forEach var="s" items="${staze}">
 					<option value="${s.idStaza}">${s.naziv} (${s.planina.naziv})</option>
 				</c:forEach>
-			</select> <input type="submit" value="Pretrazi">
+			</select> <br>
+			<input type="submit" value="Pretrazi">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		</form>
 	</c:if>
 	<hr>
