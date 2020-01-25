@@ -9,7 +9,9 @@
 <title>Komentari</title>
 </head>
 <body>
-
+	
+	<jsp:include page="/pages/navigacija.jsp" />
+	
 	<c:if test="${!empty znamenitosti}">
 		<form
 			action="${pageContext.request.contextPath}/korisnik/komentariZnamenitosti">

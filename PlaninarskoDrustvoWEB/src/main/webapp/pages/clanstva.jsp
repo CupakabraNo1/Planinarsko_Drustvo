@@ -8,6 +8,7 @@
 <title>Clanstva</title>
 </head>
 <body>
+	<jsp:include page="/pages/navigacija.jsp" />
 	<h1>Clanarine:</h1>
 	<hr>
 	<c:forEach var="k" items="${korisnici}">

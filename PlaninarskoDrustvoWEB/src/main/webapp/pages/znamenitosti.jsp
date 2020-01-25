@@ -9,6 +9,9 @@
 <title>Znamenitosti</title>
 </head>
 <body>
+
+	<jsp:include page="/pages/navigacija.jsp" />
+	
 	<c:if test="${!empty staze}">
 		<form
 			action="${pageContext.request.contextPath}/korisnik/pregledZnamenitosti">

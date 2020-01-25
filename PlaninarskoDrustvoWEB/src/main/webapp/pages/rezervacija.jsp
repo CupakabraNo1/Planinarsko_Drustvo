@@ -10,6 +10,9 @@
 <title>Rezervacije</title>
 </head>
 <body>
+
+	<jsp:include page="/pages/navigacija.jsp" />
+	
 	<c:if test="${!empty planine}">
 		<form action="${pageContext.request.contextPath}/korisnik/domovi">
 			<label for="planina">Planina</label> <select name="planina">

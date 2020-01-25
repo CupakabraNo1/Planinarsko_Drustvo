@@ -9,6 +9,8 @@
 </head>
 <body>
 	
+	<jsp:include page="/pages/navigacija.jsp" />
+	
 	<c:if test="${!empty rezervacija}">
 		<form action="${pageContext.request.contextPath}/korisnik/dodajIzvestaj" method="post" enctype="multipart/form-data">
 			<fieldset>

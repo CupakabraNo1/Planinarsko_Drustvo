@@ -8,7 +8,9 @@
 <title>Poseta</title>
 </head>
 <body>
-
+	
+	<jsp:include page="/pages/navigacija.jsp" />
+	
 	<c:if test="${!empty termini}">
 
 		<form action="${pageContext.request.contextPath}/korisnik/posetaTermina" method="post">

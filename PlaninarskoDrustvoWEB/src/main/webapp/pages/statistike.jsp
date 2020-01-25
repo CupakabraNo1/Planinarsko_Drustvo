@@ -8,7 +8,9 @@
 <title>Statistike</title>
 </head>
 <body>
-
+	
+	<jsp:include page="/pages/navigacija.jsp" />
+	
 	<h1>Statistika</h1>
 	<hr>
 	<c:forEach var="s" items="${statistika}">

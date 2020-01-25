@@ -10,42 +10,9 @@
 <title>Planinarsko društvo</title>
 </head>
 <body>
-
-
-
-	<!-- Korisnicki deo -->
-	<table style="position:fixed;top:0px;left:0px;right:0px;width:100%">
-		<tr>
-			
-				<th><a href="${pageContext.request.contextPath}/korisnik/komentari">Komentari</a></th>
-			
-			
-				<th><a href="${pageContext.request.contextPath}/korisnik/rezervisi">Rezervacija</a></th>
-			
-			<sec:authorize access="hasRole('administrator')">
-				
-					<th><a href="${pageContext.request.contextPath}/administrator/clanstva">Clanstva</a></th>
-				
-			</sec:authorize>
-				
-					<th><a href="${pageContext.request.contextPath}/ulogovan">Pocetna</a></th>
-				
-			<sec:authorize access="hasRole('administrator')">
-				
-					<th><a href="${pageContext.request.contextPath}/administrator/statistike">Statistike</a></th>
-				
-			</sec:authorize>
-			
-				<th><a href="${pageContext.request.contextPath}/korisnik/staze">Staze</a></th>
-			
-			
-				<th><a href="${pageContext.request.contextPath}/korisnik/znamenitosti">Znamentitosti</a></th>
-			
-		</tr>
-	</table>
-
-
-
+	
+	<jsp:include page="/pages/navigacija.jsp" />
+	
 	<c:if test="${!empty korisnik}">
 		<div>
 			<h1>${korisnik.ime} ${korisnik.prezime }</h1>
