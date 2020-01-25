@@ -48,13 +48,13 @@
 
 	<c:if test="${!empty korisnik}">
 		<div>
-			<h1>${korisnik.ime}${korisnik.prezime }</h1>
+			<h1>${korisnik.ime} ${korisnik.prezime }</h1>
 			<hr>
 			<span><b>Uloga: </b> ${korisnik.uloga.naziv}</span><br> 
 			<span><b>Korisnicko ime: </b>${korisnik.korisnickoIme }</span>
 			<hr>
 			<form action="${pageContext.request.contextPath}/logout" method="post">
-				<input type="submit" value="Odjavise">
+				<input type="submit" value="Odjavi se">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			</form>
 		</div>
