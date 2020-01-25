@@ -17,5 +17,6 @@ public interface PosetaRepo extends JpaRepository<Poseta, Integer>{
 	
 	public List<Poseta> nadjiPoKorisnikuIZnamenitosti(@Param("idKorisnik") Integer idKorisnik, @Param("idZnamenitost") Integer idZnamenitost);
 
-	
+	@Query("select p from Poseta p where p.terminZnamenitost.znamenitost.idZnamenitost = :idZnamenitost")
+	public List<Poseta> nadjiZaZnamenitost(@Param("idZnamenitost") Integer idZnamenitost);
 }

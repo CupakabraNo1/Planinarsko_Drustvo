@@ -36,6 +36,8 @@
 			<input type="submit" value="Rezervisi"><br>
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		</form>
+		
+		<a href="${pageContext.request.contextPath}/korisnik/izvestaji?planina=${planina.idPlanina}"><button>Ostavi izvestaj</button></a>
 	</c:if>
 
 	<c:if test="${empty domovi }">

@@ -1,13 +1,17 @@
 package com.planinarsko_drustvo.controllers;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.catalina.core.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -16,8 +20,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.planinarsko_drustvo.repository.DomRepo;
+import com.planinarsko_drustvo.repository.IzvestajRepo;
 import com.planinarsko_drustvo.repository.KomentarRepo;
 import com.planinarsko_drustvo.repository.PlaninaRepo;
 import com.planinarsko_drustvo.repository.PosetaRepo;
@@ -28,6 +40,7 @@ import com.planinarsko_drustvo.repository.TerminRepo;
 import com.planinarsko_drustvo.repository.ZnamenitostRepo;
 
 import model.Dom;
+import model.Izvestaj;
 import model.Komentar;
 import model.Korisnik;
 import model.Planina;
@@ -71,8 +84,14 @@ public class KorisnikController {
 	
 	@Autowired
 	KomentarRepo kr;
+	
+	@Autowired
+	IzvestajRepo ir;
+
+	
 	@GetMapping("/rezervisi")
 	public String otvoriRezervacije() {
+		request.getSession().removeAttribute("rezervacija");
 		@SuppressWarnings("unchecked")
 		List<Planina> planine = (List<Planina>)request.getSession().getAttribute("planine");
 		if(planine == null)
@@ -83,6 +102,7 @@ public class KorisnikController {
 
 	@GetMapping("/domovi")
 	public String nadjiDomoveNaPlanini(String planina) {
+		request.getSession().removeAttribute("rezervacija");
 		Planina planinaSaID = pr.findById(Integer.parseInt(planina)).get();
 		List<Dom> domovi = dr.findByPlanina(planinaSaID);
 		request.getSession().setAttribute("domovi", domovi);
@@ -99,6 +119,7 @@ public class KorisnikController {
 
 	@PostMapping("/napraviRezervaciju")
 	public String napraviRezervaciju(String dom, Date datumPocetka, Date datumZavrsetka) {
+		request.getSession().removeAttribute("rezervacija");
 
 		Dom d = dr.findById(Integer.parseInt(dom)).get();
 		Korisnik k = (Korisnik) request.getSession().getAttribute("korisnik");
@@ -274,4 +295,52 @@ public class KorisnikController {
 		request.getSession().setAttribute("komentari", komentari);
 		return "komentari";
 	}
+	
+	@GetMapping("/izvestaji")
+	public String izvestaji(String planina) {
+		Korisnik k = (Korisnik)request.getSession().getAttribute("korisnik");
+		List<Rezervacija> rezervacije = rr.nadjiRezervacijeZaPlaninu(Integer.parseInt(planina));
+		rezervacije.stream().filter(x->x.getKorisnik().getIdKorisnik() == k.getIdKorisnik()).collect(Collectors.toList());
+		Rezervacija r = null;
+		if(rezervacije != null && rezervacije.size() > 0) {
+			r = rezervacije.get(0);
+			request.getSession().setAttribute("rezervacija", r);
+		}
+		
+		return "izvestaji";
+	}
+
+	
+	@PostMapping("/dodajIzvestaj")
+    public String dodajIzvestaj(@RequestParam("slika") MultipartFile file, String rezervacija, String izvestaj
+                                   ) {
+
+        try {
+        	 Izvestaj i = new Izvestaj();
+             Rezervacija r = rr.findById(Integer.parseInt(rezervacija)).get();
+             i.setRezervacija(r);
+             i.setTekst(izvestaj);
+             i = ir.save(i);
+             
+            // Get the file and save it somewhere
+            byte[] bytes = file.getBytes();
+            Slika s = new Slika();
+            s.setSlika(bytes);
+            s.setIzvestaj(i);
+            s = slr.save(s);
+            
+           
+            
+            request.getSession().setAttribute("izvestaj", i);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "izvestaji";
+    }
+	
+
 }
+
+
+
