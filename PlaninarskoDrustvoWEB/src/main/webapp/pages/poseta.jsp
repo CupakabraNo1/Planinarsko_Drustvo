@@ -12,45 +12,42 @@
 	
 	<jsp:include page="/pages/navigacija.jsp" />
 	<div class="view">
-	<c:if test="${!empty termini}">
-
-		<form action="${pageContext.request.contextPath}/korisnik/posetaTermina" method="post">
-			<fieldset>
-				<legend>Za ovu znamenitost morate izabrati jedan od
-					ponudjenih termina</legend>
-				<select name="termin">
-					<c:forEach var="t" items="${termini}">
-						<option value = "${t.idTermin}">pocetak: ${t.pocetak}	kraj:${t.kraj}</option>
-					</c:forEach>
-				</select><br>
-				<input type="submit" value="Zakazi posetu">
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-			</fieldset>
-		</form>
+		<c:if test="${!empty termini}">
+	
+			<form action="${pageContext.request.contextPath}/korisnik/posetaTermina" method="post">
+				<fieldset>
+					<legend>Za ovu znamenitost morate izabrati jedan od
+						ponudjenih termina</legend>
+					<select name="termin">
+						<c:forEach var="t" items="${termini}">
+							<option value="${t.idTermin}">pocetak: ${t.pocetak}	kraj:${t.kraj}</option>
+						</c:forEach>
+					</select><br>
+					<input type="submit" value="Zakazi posetu">
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+				</fieldset>
+			</form>
+		</c:if>
+	
+		<c:if test="${empty termini}">
+			<form action="${pageContext.request.contextPath}/korisnik/posetaVanTermina" method="post">
+				<fieldset>
+					<legend>Za ovu znamenitost nije potreban izbor termina</legend>
+					<input type="hidden" name="znamenitost" value="${znamenitost.idZnamenitost}"/>
+					<input type="date" name="pocetak"><br>
+					<input type="date" name="kraj">
+					<input type="submit" value="Zakazi posetu">
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+				</fieldset>
+			</form>
+		</c:if>
 		
 		<c:if test="${poseta == 1 }">
-			<span>Nije moguce napraviti ovu posetu. Potrebno je imati rezervaciju u domu na ovoj planini.</span>
-		</c:if>
-		<c:if test="${!empty pos }">
-			<span>Zakazali ste posetu. ${poseta.idPoseta}</span>
-		</c:if>
-	</c:if>
-
-	<c:if test="${empty termini}">
-		<form action="${pageContext.request.contextPath}/korisnik/posetaVanTermina" method="post">
-			<fieldset>
-				<legend>Za ovu znamenitost nije potreban izbor termina</legend>
-				<select name="termin">
-					<c:forEach var="t" items="${termini}">
-						<option value = "${t.idTermin}">pocetak: ${t.pocetak}	kraj:${t.kraj}</option>
-					</c:forEach>
-				</select><br>
-				
-				<input type="submit" value="Zakazi posetu">
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-			</fieldset>
-		</form>
-	</c:if>
+				<span class="neuspesno">Nije moguce napraviti ovu posetu. Potrebno je imati rezervaciju u domu na ovoj planini.</span>
+			</c:if>
+			<c:if test="${!empty pos }">
+				<span class="uspesno">Zakazali ste posetu. ${poseta.idPoseta}</span>
+			</c:if>
 	</div>
 </body>
 </html>

@@ -31,20 +31,20 @@
     <h1>Znamenitosti za stazu: ${staza.naziv}</h1>
 	<c:forEach var="z" begin="0" end="${znamenitosti.size()-1}">
 		<div>
-			<h1>${znamenitosti.get(i).tip}</h1>
-			<span>${znamenitosti.get(i).opis}</span><br>
-			<c:if test="${slike.get(i).size() != 0}">
-				<c:forEach var="s" begin="0" end="${slike.get(i).size()}">
-					<img src="data:image/jpg;base64,${slike.get(i).get(s)}"><br>
+			<h1>${znamenitosti.get(z).tip}</h1>
+			<span>${znamenitosti.get(z).opis}</span><br>
+			<c:if test="${slike.get(z).size() != 0}">
+				<c:forEach var="s" begin="0" end="${slike.get(z).size()}">
+					<img src="data:image/jpg;base64,${slike.get(z).get(s)}"><br>
 				</c:forEach>
 			</c:if>
-			<c:if test="${slike.get(i).size() == 0}">
+			<c:if test="${slike.get(z).size() == 0}">
 				<span>Nema slika za ovu znamenitost.</span><br>
 			</c:if>
-			<c:if test="${posetio.get(i) == 1}">
-				<a href="${pageContext.request.contextPath}/korisnik/komentariZnamenitosti?znamenitost=${znamenitosti.get(i).idZnamenitost}"><button>Komentarisi</button></a>
+			<c:if test="${posetio.get(z) == 1}">
+				<a href="${pageContext.request.contextPath}/korisnik/komentariZnamenitosti?znamenitost=${znamenitosti.get(z).idZnamenitost}"><button>Komentarisi</button></a>
 			</c:if>
-			<a href="${pageContext.request.contextPath}/korisnik/poseti?z=${znamenitosti.get(i).idZnamenitost}"><button>Zakazi posetu</button></a>
+			<a href="${pageContext.request.contextPath}/korisnik/poseti?z=${znamenitosti.get(z).idZnamenitost}"><button>Zakazi posetu</button></a>
 		</div>
 
 	</c:forEach>

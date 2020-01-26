@@ -35,21 +35,17 @@
 					<option value="${d.idDom }">${d.naziv}</option>
 				</c:forEach>
 			</select> <br>
-			<label for="datumPocetka">Datum pocetka</label> <input type="date" name="datumPocetka"><br>
-			<label for="datumZavrsetka">Datum zavrsetka</label> <input type="date" name="datumZavrsetka"><br>
+			<label for="datumPocetka">Datum pocetka</label> <input type="date" name="datumPocetka" required><br>
+			<label for="datumZavrsetka">Datum zavrsetka</label> <input type="date" name="datumZavrsetka" required><br>
 			<input type="submit" value="Rezervisi"><br>
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		</form>
 		
 		<a href="${pageContext.request.contextPath}/korisnik/izvestaji?planina=${planina.idPlanina}"><button>Ostavi izvestaj</button></a>
 	</c:if>
-
-	<c:if test="${empty domovi }">
-		<h1>Nema domova. Plakyyyy.</h1>
-	</c:if>
 	
 	<c:if test="${!empty rezervacija}">
-		<h1>Napravili ste rezervaciju id joj je ${rezervacija.idRezervacija}</h1>
+		<span class="uspesno">Napravili ste rezervaciju.</span>
 	</c:if>
 	
 	<c:if test="${!empty domovi}">

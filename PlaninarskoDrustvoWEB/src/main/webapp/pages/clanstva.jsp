@@ -24,8 +24,8 @@
 						<input type="hidden" name="id" value="${k.idKorisnik}">
 						<span> ${k.ime } </span><br>
 						<span> ${k.prezime } </span><br>
-						<span><input type="date" name="od"></span> <br>
-						<span><input type="date" name="do_"></span> <br>
+						<span><input type="date" name="od" required></span> <br>
+						<span><input type="date" name="do_" required></span> <br>
 						<span><input type="submit" value="Uclani"></span><br>
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					</fieldset>
@@ -42,8 +42,8 @@
 						<input type="hidden" name="id" value="${k.idKorisnik}">
 						<span> ${k.ime } </span><br>
 						<span> ${k.prezime } </span><br>
-						<span><input type="date" name="od"></span><span><b> ${k.clanarina.od }</b></span> <br>
-						<span><input type="date" name="do_"></span><span><b> ${k.clanarina.do_}</b></span> <br>
+						<span><input type="date" name="od" required></span><span><b> ${k.clanarina.od }</b></span> <br>
+						<span><input type="date" name="do_" required></span><span><b> ${k.clanarina.do_}</b></span> <br>
 						<span><input type="submit" value="Produzi"></span><br>
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					</fieldset>
@@ -68,18 +68,18 @@
 	<form action="${pageContext.request.contextPath}/administrator/uclaniNovog" method="post">
 		<fieldset>
 			<legend>Uclani novog</legend>
-			<label for="ime">Ime</label> <input type="text" name="ime"><br>
-			<label for="prezime">Prezime</label> <input type="text" name="prezime"> <br> 
-			<label for="korisnicko_ime">Korisničko ime</label><input type="text" name="korisnicko_ime"><br>
-			<label for="lozinka">Lozinka</label><input type="password" name="lozinka"><br>
+			<label for="ime">Ime</label> <input type="text" name="ime" required><br>
+			<label for="prezime">Prezime</label> <input type="text" name="prezime" required> <br> 
+			<label for="korisnicko_ime">Korisničko ime</label><input type="text" name="korisnicko_ime" required><br>
+			<label for="lozinka">Lozinka</label><input type="password" name="lozinka" required><br>
 			<!-- TODO: uloga korisnika u drustvu  -->
 			<select name="uloga">
 				<c:forEach var="u" items="${uloge}">
 					<option value="${u.idUloga}">${u.naziv}</option>
 				</c:forEach>
 			</select>
-			<label for="od">Od</label><input type="date" name="od">
-			<label for="do_">Do</label><input type="date" name="do_">
+			<label for="od">Od</label><input type="date" name="od" required>
+			<label for="do_">Do</label><input type="date" name="do_" required>
 			<input type="submit" value="Uclani">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		</fieldset>

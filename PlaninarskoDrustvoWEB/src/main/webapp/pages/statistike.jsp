@@ -15,10 +15,12 @@
 	<h1>Statistika</h1>
 	<hr>
 	<c:forEach var="s" items="${statistika}">
-		<div>
-			<span>${s.key.naziv} </span><span> (${s.value[0]}) </span><span>
-				(${s.value[1]}) </span>
+		<div class="statistika">
+			<span><b> Naziv planine: </b> ${s.key.naziv} </span><br>
+			<span><b> Broj rezervacija: </b> ${s.value[0]} </span><br>
+			<span><b> Broj nocenja: </b> ${s.value[1]} </span>
 		</div>
+		<br>
 	</c:forEach>
 	<hr>
 	<h3>Pregled poseta znamenitosti: </h3>

@@ -138,6 +138,7 @@ public class KorisnikController {
 	@GetMapping("/staze")
 	public String staze() {
 		request.getSession().removeAttribute("planine");
+		request.getSession().removeAttribute("staze");
 		@SuppressWarnings("unchecked")
 		List<Planina> planine = (List<Planina>)request.getSession().getAttribute("planine");
 		if(planine == null)
@@ -157,7 +158,7 @@ public class KorisnikController {
 
 		request.getSession().setAttribute("bs64", bs64);
 		request.getSession().setAttribute("staze", staze);
-		return staze();
+		return "staze";
 	}
 	
 	@GetMapping("/znamenitosti")
@@ -188,7 +189,10 @@ public class KorisnikController {
 			slikas.stream().forEach(s -> slikeU64.add(Base64.getEncoder().encodeToString(s.getSlika())));
 			slike.add(slikeU64);
 		}
-
+		
+		
+		List<Planinarska_staza> staze = sr.findAll();
+		request.getSession().setAttribute("staze", staze);
 		request.getSession().setAttribute("staza", pStaza);
 		request.getSession().setAttribute("znamenitosti", znamenitosti);
 		request.getSession().setAttribute("slike", slike);
@@ -200,14 +204,18 @@ public class KorisnikController {
 	public String poseti(String z) {
 		Znamenitost znamenitost = zr.findById(Integer.parseInt(z)).get();
 		List<Termin_znamenitost> termini = trzr.findByZnamenitost(znamenitost);
-		for(Termin_znamenitost t:termini) {
-			if(t.getNeophodan() == 0) {
-				termini.remove(t);
+		List<Termin_znamenitost> neopt = new ArrayList<Termin_znamenitost>();
+		if(termini != null) {
+			for(Termin_znamenitost t:termini) {
+				if(t.getNeophodan() == 0) {
+					neopt.add(t);
+				}
 			}
 		}
 		request.getSession().setAttribute("termini", termini);
-		if(termini.size() == 0) {
+		if(neopt == null || neopt.size() > 0) {
 			request.getSession().setAttribute("termini", null);
+			request.getSession().setAttribute("znamenitost", znamenitost);
 		}
 		
 		return "poseta";
@@ -227,15 +235,13 @@ public class KorisnikController {
 		List<Rezervacija> rez = new ArrayList<Rezervacija>();
 		for (Dom d : domovi) {
 			List<Rezervacija> rezervacije = rr.nadjiRezervacijuZaKorisnika(k.getIdKorisnik(), d.getIdDom());
-			rezervacije.stream().filter(x->x.getOd().before(poc)).collect(Collectors.toList());
+			rezervacije = rezervacije.stream().filter(x->x.getOd().before(poc)).filter(x->x.getDo_().after(poc)).collect(Collectors.toList());
 			rez.addAll(rezervacije);
 		}
 		if(rez != null && rez.size() > 0) {
 			r = rez.get(0);
 		}
-		System.out.println(tz.getIdTermin());
-		System.out.println(r.getIdRezervacija());
-		if (tz != null && r != null) {
+		if (r != null) {
 			Poseta poseta = new Poseta();
 			poseta.setRezervacija(r);
 			poseta.setTerminZnamenitost(tz);
@@ -246,6 +252,49 @@ public class KorisnikController {
 			request.getSession().setAttribute("poseta", 1);
 			request.getSession().removeAttribute("pos");
 		}
+		return "poseta";
+	}
+	
+	@PostMapping("/posetaVanTermina")
+	public String posetaVanTermina(String znamenitost, Date pocetak, Date kraj) {
+		
+		Znamenitost z = zr.findById(Integer.parseInt(znamenitost)).get();
+		Korisnik k = (Korisnik) request.getSession().getAttribute("korisnik");
+		
+		Planina p = z.getPlaninarskaStaza().getPlanina();
+		List<Dom> domovi = dr.findByPlanina(p);
+
+		Rezervacija r = null;
+		
+		List<Rezervacija> rez = new ArrayList<Rezervacija>();
+		for (Dom d : domovi) {
+			List<Rezervacija> rezervacije = rr.nadjiRezervacijuZaKorisnika(k.getIdKorisnik(), d.getIdDom());
+			rezervacije = rezervacije.stream().filter(x->x.getOd().before(pocetak)).filter(x->x.getDo_().after(pocetak)).collect(Collectors.toList());
+			rez.addAll(rezervacije);
+		}
+		if(rez != null && rez.size() > 0) {
+			r = rez.get(0);
+		}
+		if (r != null) {
+			Poseta poseta = new Poseta();
+			poseta.setRezervacija(r);
+			
+			Termin_znamenitost tz = new Termin_znamenitost();
+			tz.setZnamenitost(z);
+			tz.setPocetak(pocetak);
+			tz.setKraj(kraj);
+			tz.setNeophodan(0);
+			trzr.save(tz);
+			
+			poseta.setTerminZnamenitost(tz);
+			poseta = posr.save(poseta);
+			request.getSession().setAttribute("pos", poseta);
+			request.getSession().removeAttribute("poseta");
+		}else {
+			request.getSession().setAttribute("poseta", 1);
+			request.getSession().removeAttribute("pos");
+		}
+		
 		return "poseta";
 	}
 	

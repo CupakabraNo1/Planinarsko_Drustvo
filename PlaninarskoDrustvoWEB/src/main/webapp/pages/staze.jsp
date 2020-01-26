@@ -31,16 +31,19 @@
 	<c:if test="${!empty staze}">
 		<c:forEach var="i" begin="0" end="${staze.size()-1}">
 			<form action="${pageContext.request.contextPath}/korisnik/pregledZnamenitosti">
-				<div class="staza">
-					<h2>${staze.get(i).naziv}</h2>
-					<h4>${staze.get(i).opis }</h4>
-					<img src="data:image/jpg;base64,${bs64.get(i)}"
-						alt="${staze.get(i).naziv}">
-					<h6>${staze.get(i).tezina}</h6>
-					<input type="hidden" name="staza" value="${staze.get(i).idStaza}">
-					<input type="submit" value="Prikazi znamenitost">
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-				</div>
+				<center>
+					<div class="staza">
+						<h2>${staze.get(i).naziv}</h2>
+						<h4>${staze.get(i).opis }</h4>
+						<img src="data:image/jpg;base64,${bs64.get(i)}"
+							alt="${staze.get(i).naziv}"><br>
+						<span><b>Tezina staze: </b>${staze.get(i).tezina}</span><br>
+						<input type="hidden" name="staza" value="${staze.get(i).idStaza}">
+						<input type="submit" value="Prikazi znamenitost">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+						<hr>
+					</div>
+				</center>
 			</form>
 		</c:forEach>
 	</c:if>
