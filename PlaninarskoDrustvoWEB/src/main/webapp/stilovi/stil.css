@@ -1,0 +1,62 @@
+/*@author Vladimir Novakovic*/
+@charset "UTF-8";
+
+body {
+    background-color: #5CDB95;
+    padding-top:7vh;
+    color:#379683;
+    padding:10px;
+    color:#05386B;
+}
+
+a{
+	text-decoration:none;
+	text-size:1.6em;
+	color:#05386B;
+}
+
+form{
+	background-color:#8EE4AF;
+	width:50vw;
+	padding: 10px; 
+}
+
+img{
+	width:250px;
+	height:250px;
+}
+
+.navigation {
+    width: 100vw;
+    height: 5vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: table;
+}
+
+.navigation span {
+    background-color: #5CDB95;
+    display: table-cell;
+    text-align: center;
+    margin: auto;
+    /* border: 1px solid #379683; */
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.navigation span:hover {
+    transform: scale(1.2);
+    background-color: #8EE4AF;
+}
+
+.view{
+	margin-top:7vh;
+}
+
+.staza{
+	margin:auto;
+}
+
+

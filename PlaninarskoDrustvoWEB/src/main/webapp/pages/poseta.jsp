@@ -6,11 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Poseta</title>
+<link rel="stylesheet" type="text/css" href=<c:url value="/stilovi/stil.css" />>
 </head>
 <body>
 	
 	<jsp:include page="/pages/navigacija.jsp" />
-	
+	<div class="view">
 	<c:if test="${!empty termini}">
 
 		<form action="${pageContext.request.contextPath}/korisnik/posetaTermina" method="post">
@@ -50,6 +51,6 @@
 			</fieldset>
 		</form>
 	</c:if>
-
+	</div>
 </body>
 </html>

@@ -7,11 +7,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Znamenitosti</title>
+<link rel="stylesheet" type="text/css" href=<c:url value="/stilovi/stil.css" />>
 </head>
 <body>
 
 	<jsp:include page="/pages/navigacija.jsp" />
-	
+	<div class="view">
 	<c:if test="${!empty staze}">
 		<form
 			action="${pageContext.request.contextPath}/korisnik/pregledZnamenitosti">
@@ -41,13 +42,13 @@
 				<span>Nema slika za ovu znamenitost.</span><br>
 			</c:if>
 			<c:if test="${posetio.get(i) == 1}">
-				<a href="${pageContext.request.contextPath}/korisnik/prikaziKomentare=${znamenitost.get(i).idZnamenitost}"><button>Komentarisi</button></a>
+				<a href="${pageContext.request.contextPath}/korisnik/komentariZnamenitosti?znamenitost=${znamenitosti.get(i).idZnamenitost}"><button>Komentarisi</button></a>
 			</c:if>
 			<a href="${pageContext.request.contextPath}/korisnik/poseti?z=${znamenitosti.get(i).idZnamenitost}"><button>Zakazi posetu</button></a>
 		</div>
 
 	</c:forEach>
 	</c:if>
-
+	</div>
 </body>
 </html>

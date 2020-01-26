@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Prijava</title>
+<link rel="stylesheet" type="text/css" href=<c:url value="/stilovi/stil.css" />>
 </head>
 <body>
 
@@ -15,17 +16,15 @@
 			<fieldset>
 				<legend>Prijava</legend>
 				<label for="username">Korisničko ime</label> <input type="text" name="username"><br> 
-				<label for="password">Lozinka</label><input type="password" name="password"> <input type="submit" value="Prijavi se">
-				 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				<label for="password">Lozinka</label><input type="password" name="password"><br>
+				<input type="submit" value="Prijavi se">
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			</fieldset>
 		</form>
 
 		<a href="${pageContext.request.contextPath}/registruj">Registruj
 			se</a>
 	</c:if>
-
-	<!--<c:set var = "registracija" scope = "session" value = "1"/>-->
-
 
 	<c:if test="${! empty reg}">
 
@@ -36,7 +35,7 @@
 				<label for="ime">Ime</label> <input type="text" name="ime"><br>
 				<label for="prezime">Prezime</label> <input type="text" name="prezime"> <br> 
 				<label for="korisnicko_ime">Korisničko ime</label><input type="text" name="korisnicko_ime"><br>
-				<label for="lozinka">Lozinka</label><input type="password" name="lozinka">
+				<label for="lozinka">Lozinka</label><input type="password" name="lozinka"><br>
 				<input type="submit" value="Prijavi se">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			</fieldset>

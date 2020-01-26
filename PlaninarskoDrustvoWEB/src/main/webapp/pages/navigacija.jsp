@@ -9,34 +9,32 @@
 </head>
 <body>
 	
-	<table style="position:fixed;top:0px;left:0px;right:0px;width:100%">
-		<tr>
+	<div class="navigation">
+
+				<span><a href="${pageContext.request.contextPath}/korisnik/komentari">Komentari</a></span>
 			
-				<th><a href="${pageContext.request.contextPath}/korisnik/komentari">Komentari</a></th>
 			
-			
-				<th><a href="${pageContext.request.contextPath}/korisnik/rezervisi">Rezervacija</a></th>
+				<span><a href="${pageContext.request.contextPath}/korisnik/rezervisi">Rezervacija</a></span>
 			
 			<sec:authorize access="hasRole('administrator')">
 				
-					<th><a href="${pageContext.request.contextPath}/administrator/clanstva">Clanstva</a></th>
+					<span><a href="${pageContext.request.contextPath}/administrator/clanstva">Clanstva</a></span>
 				
 			</sec:authorize>
 				
-					<th><a href="${pageContext.request.contextPath}/ulogovan">Pocetna</a></th>
+					<span><a href="${pageContext.request.contextPath}/ulogovan">Pocetna</a></span>
 				
 			<sec:authorize access="hasRole('administrator')">
 				
-					<th><a href="${pageContext.request.contextPath}/administrator/statistike">Statistike</a></th>
+					<span><a href="${pageContext.request.contextPath}/administrator/statistike">Statistike</a></span>
 				
 			</sec:authorize>
 			
-				<th><a href="${pageContext.request.contextPath}/korisnik/staze">Staze</a></th>
+				<span><a href="${pageContext.request.contextPath}/korisnik/staze">Staze</a></span>
 			
 			
-				<th><a href="${pageContext.request.contextPath}/korisnik/znamenitosti">Znamentitosti</a></th>
+				<span><a href="${pageContext.request.contextPath}/korisnik/znamenitosti">Znamentitosti</a></span>
 			
-		</tr>
-	</table>
+	</div>
 </body>
 </html>

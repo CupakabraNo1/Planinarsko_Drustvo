@@ -7,15 +7,16 @@
 <head>
 <meta charset="UTF-8">
 <title>Planinarske staze</title>
+<link rel="stylesheet" type="text/css" href=<c:url value="/stilovi/stil.css" />>
 </head>
 <body>
 
 	<jsp:include page="/pages/navigacija.jsp" />
-
+	<div class="view">
 	<c:if test="${!empty planine}">
 		<form
 			action="${pageContext.request.contextPath}/korisnik/pregledStaza">
-			<label for="planina">Planina</label> <select name="planina">
+			<label for="planina">Planina</label> <select name="planina" value="">
 				<c:forEach var="p" items="${planine}">
 					<option value="${p.idPlanina}">${p.naziv}</option>
 				</c:forEach>
@@ -30,8 +31,7 @@
 	<c:if test="${!empty staze}">
 		<c:forEach var="i" begin="0" end="${staze.size()-1}">
 			<form action="${pageContext.request.contextPath}/korisnik/pregledZnamenitosti">
-				<div style="border: 1px solid black; magine: 1%">
-
+				<div class="staza">
 					<h2>${staze.get(i).naziv}</h2>
 					<h4>${staze.get(i).opis }</h4>
 					<img src="data:image/jpg;base64,${bs64.get(i)}"
@@ -45,6 +45,6 @@
 		</c:forEach>
 	</c:if>
 
-
+	</div>
 </body>
 </html>

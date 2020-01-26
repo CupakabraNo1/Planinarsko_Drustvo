@@ -6,11 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Statistike</title>
+<link rel="stylesheet" type="text/css" href=<c:url value="/stilovi/stil.css" />>
 </head>
 <body>
 	
 	<jsp:include page="/pages/navigacija.jsp" />
-	
+	<div class="view">
 	<h1>Statistika</h1>
 	<hr>
 	<c:forEach var="s" items="${statistika}">
@@ -38,5 +39,6 @@
 			<span>${p.terminZnamenitost.kraj}</span>
 		</c:forEach>
 	</c:if>
+	</div>
 </body>
 </html>

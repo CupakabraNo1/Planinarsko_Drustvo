@@ -8,11 +8,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Rezervacije</title>
+<link rel="stylesheet" type="text/css" href=<c:url value="/stilovi/stil.css" />>
 </head>
 <body>
 
 	<jsp:include page="/pages/navigacija.jsp" />
-	
+	<div class="view">
 	<c:if test="${!empty planine}">
 		<form action="${pageContext.request.contextPath}/korisnik/domovi">
 			<label for="planina">Planina</label> <select name="planina">
@@ -54,7 +55,8 @@
 	<c:if test="${!empty domovi}">
     	<a href="${pageContext.request.contextPath}/korisnik/pregledStaza?planina=${planina.idPlanina}"><button>Pregled staza</button></a>
     </c:if>
-
+	
+	</div>
 
 
 </body>

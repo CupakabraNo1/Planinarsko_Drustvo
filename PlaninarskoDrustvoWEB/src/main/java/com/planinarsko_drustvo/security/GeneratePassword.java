@@ -6,11 +6,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class GeneratePassword {
 	
-//	public static void main(String[] args) {
-//		String password = "admin";
-//		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//		System.out.println(passwordEncoder.encode(password));
-//	}
+	public static void main(String[] args) {
+		String password = "a";
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		System.out.println(passwordEncoder.encode(password));
+	}
 	
 	public String napraviLozinku(String lozinka) {
 		

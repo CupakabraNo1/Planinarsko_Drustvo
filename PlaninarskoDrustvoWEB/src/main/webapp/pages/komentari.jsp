@@ -7,11 +7,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Komentari</title>
+<link rel="stylesheet" type="text/css" href=<c:url value="/stilovi/stil.css" />>
 </head>
 <body>
 	
 	<jsp:include page="/pages/navigacija.jsp" />
-	
+	<div class="view">
 	<c:if test="${!empty znamenitosti}">
 		<form
 			action="${pageContext.request.contextPath}/korisnik/komentariZnamenitosti">
@@ -56,5 +57,6 @@
 	<c:if test="${empty poseta}">
 		<b> Nije vam dozvoljeno komentarisanje ove znamenitosti. </b>
 	</c:if>
+	</div>
 </body>
 </html>

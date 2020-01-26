@@ -72,7 +72,7 @@ public class AdministratorController {
 	@GetMapping("/clanstva")
 	public String clanstva() {
 		List<Korisnik> korisnici = kr.findAll();
-		korisnici.stream().filter(x->x.getUloga().getIdUloga() == 2).collect(Collectors.toList());
+//		korisnici.stream().filter(x->x.getUloga().getIdUloga() == 2).collect(Collectors.toList());
 		List<Uloga> uloge = ur.findAll();
 		request.getSession().setAttribute("korisnici", korisnici);
 		request.getSession().setAttribute("uloge", uloge);
@@ -99,6 +99,22 @@ public class AdministratorController {
 		return clanstva();
 	}
 	
+	@PostMapping("/uclani")
+	public String uclani(String id, Date od, Date do_) {
+		
+		Korisnik k = kr.findById(Integer.parseInt(id)).get();
+		
+		Clanarina c = new Clanarina();
+		c.setOd(od);
+		c.setDo_(do_);
+		
+		c.setKorisnik(k);
+		k.setClanarina(c);
+		cr.save(c);
+		kr.save(k);
+		return clanstva();
+	}
+	
 	@PostMapping("/uclaniNovog")
 	public String uclaniNovog(String ime, String prezime, String korisnicko_ime, String lozinka,String uloga,  Date od, Date do_) {
 		
@@ -118,7 +134,7 @@ public class AdministratorController {
 		k.setClanarina(c);
 		
 		kr.save(k);
-		return "clanstva";
+		return clanstva();
 	}
 	
 	@GetMapping("/statistike")

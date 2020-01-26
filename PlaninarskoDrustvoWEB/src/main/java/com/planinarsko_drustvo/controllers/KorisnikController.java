@@ -137,6 +137,7 @@ public class KorisnikController {
 	
 	@GetMapping("/staze")
 	public String staze() {
+		request.getSession().removeAttribute("planine");
 		@SuppressWarnings("unchecked")
 		List<Planina> planine = (List<Planina>)request.getSession().getAttribute("planine");
 		if(planine == null)
@@ -156,11 +157,12 @@ public class KorisnikController {
 
 		request.getSession().setAttribute("bs64", bs64);
 		request.getSession().setAttribute("staze", staze);
-		return "staze";
+		return staze();
 	}
 	
 	@GetMapping("/znamenitosti")
 	public String otvoriZnamenitosti(String staza) {
+		request.getSession().removeAttribute("znamenitosti");
 		List<Planinarska_staza> staze = sr.findAll();
 		request.getSession().setAttribute("staze", staze);
 		return "znamenitosti";
@@ -222,19 +224,15 @@ public class KorisnikController {
 		Rezervacija r = null;
 		Date poc = tz.getPocetak();
 		Date kr = tz.getKraj();
+		List<Rezervacija> rez = new ArrayList<Rezervacija>();
 		for (Dom d : domovi) {
 			List<Rezervacija> rezervacije = rr.nadjiRezervacijuZaKorisnika(k.getIdKorisnik(), d.getIdDom());
-			
-			if (rezervacije != null) {
-				for (Rezervacija rez : rezervacije) {
-					if (rez.getOd().before(poc)) {
-						r = rez;
-						break;
-					}
-				}
-			}
+			rezervacije.stream().filter(x->x.getOd().before(poc)).collect(Collectors.toList());
+			rez.addAll(rezervacije);
 		}
-		//TODO:ne pronalazi rezervaciju za tu planinu
+		if(rez != null && rez.size() > 0) {
+			r = rez.get(0);
+		}
 		System.out.println(tz.getIdTermin());
 		System.out.println(r.getIdRezervacija());
 		if (tz != null && r != null) {
@@ -253,6 +251,7 @@ public class KorisnikController {
 	
 	@GetMapping("/komentari")
 	public String komentari() {
+		request.getSession().removeAttribute("znamenitosti");
 		List<Znamenitost> znamenitosti = zr.findAll();
 		request.getSession().setAttribute("znamenitosti", znamenitosti);
 		return "komentari";
@@ -272,7 +271,7 @@ public class KorisnikController {
 		request.getSession().setAttribute("poseta", poseta);
 		request.getSession().setAttribute("znamenitost", z);
 		request.getSession().setAttribute("komentari", komentariZaZ);
-		return "komentari";
+		return komentari();
 	}
 
 	@PostMapping("/komentarisi")

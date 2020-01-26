@@ -5,8 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Neuspesno logovanje</title>
+<link rel="stylesheet" type="text/css" href=<c:url value="/stilovi/stil.css" />>
 </head>
-<body>
+<body>	
+	<div class="view">
+	</div>
 
 </body>
 </html>
